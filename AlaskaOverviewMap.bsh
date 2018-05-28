@@ -1,0 +1,36 @@
+#!/bin/bash
+
+
+# Set paper specs 
+gmt gmtset PS_MEDIA=Custom_10ix15i
+gmt gmtset FORMAT_GEO_MAP ddd.mmF
+gmt gmtset MAP_FRAME_PEN 2 
+gmt gmtset FONT_ANNOT_PRIMARY 20p,Helvetica
+
+psfile=Alaska.ps
+loc=jarvis.xy
+
+
+# Plot the coastline and rivers
+gmt pscoast -Jb-154/50/55/65/1:12000000 -R172/230/51/72 -Swhite -B10g10/5g5 \
+-G220/220/220 -I1/2p,0/192/255 -I2/1p,0/192/255 -I3/1p,0/192/255 \
+-W1p,0/0/0 -K > $psfile
+
+# Plot the site location 
+gmt psxy $loc -R -Jb -: -Ss1.5c -Gred -Wthinnest -O >> $psfile
+
+
+
+pngfile=`pwd`${psfile%.ps}.png
+
+# Convert postscript to png using ghostscript
+#gs -dSAFER \
+#   -dBATCH \
+#   -dNOPAUSE \
+#   -sDEVICE=png16m \
+#   -sOutputFile=$pngfile \
+#   $psfile
+
+
+# If you'd rather use imagemagick then uncomment the following line
+# convert $psfile $pngfile
